@@ -1,0 +1,10 @@
+SECRET_KEY="use generate key and paste here"
+ALLOWED_DOMAINS="email domain here"
+COMPANY="company here"
+TOKEN_EXPIRY_DAYS=2
+TOKEN_EXPIRY_MINUTES=60
+MAIL_USERNAME=""
+MAIL_PASSWORD=""
+MAIL_DEFAULT_SENDER=""
+ENCRYPTION_KEY="use generate key and paste here"
+snowflake_connection =  '{"account":"","user":"","password":"","database":"","schema":"","warehouse":"ENTERPRISE_DW","role": "DEVELOPER_ROLE" }'

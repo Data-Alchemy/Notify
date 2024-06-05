@@ -1,0 +1,9 @@
+Flask
+Flask-SQLAlchemy
+python-dotenv
+PyJWT
+Flask-Mail
+pycryptodome
+snowflake-snowpark-python==1.14.0
+pandas==2.0.0
+ollama
