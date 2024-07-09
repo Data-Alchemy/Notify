@@ -36,7 +36,7 @@ snowpipe = Snowpipe(connection_parameters=creds)
 
 def query_scanner(query):
     """Check if the query contains forbidden operations."""
-    forbidden_keywords = ["delete", "insert", "truncate"]
+    forbidden_keywords = ["delete", "insert", "truncate", "drop", "create"]
     for keyword in forbidden_keywords:
         if keyword in query.lower():
             return False, f"Error: {keyword.upper()} operations are not allowed."
@@ -58,16 +58,24 @@ def run_snowflake_query():
         return jsonify({"message": payload}), 401
 
     try:
-        query = request.json.get('query')
-        if not query:
+        data = request.get_json()
+        if not data or 'query' not in data:
             return jsonify({"message": "Query is required"}), 400
-        
+
+        query = data['query']
+
+        # Sanitize the query string to escape double quotes
+        query = query.replace('"', '\\"')
+
         is_safe, message = query_scanner(query)
         if not is_safe:
             return jsonify({"message": message}), 400
 
         results = snowpipe.get_pdf(query)
         return jsonify(results.to_dict(orient='records')), 200
+    except json.JSONDecodeError as e:
+        logging.error(f"JSON decode error: {e}")
+        return jsonify({"message": "Invalid JSON format", "error": str(e)}), 400
     except Exception as e:
         logging.error(f"Error running Snowflake query: {e}")
         return jsonify({"message": "Error running Snowflake query", "error": str(e)}), 500

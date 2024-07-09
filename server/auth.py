@@ -127,7 +127,7 @@ def register():
         db.session.add(new_user)
         db.session.commit()
     else:
-        user.name = name  # Update name if it has changed
+        user.name = name  
         user.time_to_live = time_to_live
         db.session.commit()
     
